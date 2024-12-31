@@ -1,6 +1,6 @@
 -pedantic
 -D_GNU_SOURCE
--std=gnu11
+-std=c2x
 -Werror
 -Wfloat-conversion
 -Wimplicit-fallthrough

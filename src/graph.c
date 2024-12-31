@@ -1,11 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "graph.h"
 
-Node *create_node(size_t idx)
+Node *create_node(usize idx)
 {
     Node *new_node = (Node*)malloc(sizeof(Node));
-    if (new_node == NULL) {
+    if (new_node == nullptr) {
         fprintf(stderr, "failed to allocate memory for node\n");
         exit(1);
     }
@@ -14,9 +13,9 @@ Node *create_node(size_t idx)
     return new_node;
 }
 
-size_t number_of_edges(Node *node)
+usize number_of_edges(Node *node)
 {
-    if (node == NULL) {
+    if (node == nullptr) {
         return 0;
     }
     return node->edges->size;
@@ -25,18 +24,18 @@ size_t number_of_edges(Node *node)
 Dictionary *create_dict(void)
 {
     Dictionary *dict = (Dictionary*)malloc(sizeof(Dictionary));
-    if (dict == NULL) {
+    if (dict == nullptr) {
        fprintf(stderr, "failed to allocate memory for dictionary\n");
        exit(1);
     }
     dict->capacity = 0;
     dict->size = 0;
-    dict->entries = NULL;
+    dict->entries = nullptr;
 
     return dict;
 }
 
-void add_edge(Node* from_node, size_t to_node, size_t weight)
+void add_edge(Node* from_node, usize to_node, usize weight)
 {
     if (from_node->edges->size == from_node->edges->capacity) {
         from_node->edges->capacity =
@@ -50,7 +49,7 @@ void add_edge(Node* from_node, size_t to_node, size_t weight)
     }
     //Create the edge
     Edge *new_edge = (Edge*)malloc(sizeof(Edge));
-    if (new_edge == NULL) {
+    if (new_edge == nullptr) {
         fprintf(stderr, "failed to allocate memory for new edge\n");
         exit(1);
     }
@@ -61,7 +60,7 @@ void add_edge(Node* from_node, size_t to_node, size_t weight)
     // Create the dict entry
     //TODO: this edge might already exist so need to check
     Entry *new_entry = (Entry*)malloc(sizeof(Entry));
-    if (new_entry == NULL) {
+    if (new_entry == nullptr) {
         fprintf(stderr, "failed to allocate memory for new entry\n");
         exit(1);
     }
@@ -70,4 +69,40 @@ void add_edge(Node* from_node, size_t to_node, size_t weight)
 
     from_node->edges->entries[from_node->edges->size] = new_entry;
     from_node->edges->size++;
+}
+
+/* 
+ *
+* Returns the edge object if edge exists between two nodes. Otherwise, 
+* returns nullptr.
+* */
+Edge *get_edge(Node *from_node, usize to_node)
+{
+    Dictionary *edges = from_node->edges;
+    
+    for (usize i = 0; i < edges->size; i++) {
+       if (edges->entries[i]->key == to_node) {
+           return edges->entries[i]->value;
+       } 
+    }
+    return nullptr;
+}
+
+void remove_edge(Node *from_node, usize to_node)
+{
+    Dictionary *edges = from_node->edges;
+    
+    for (usize i = 0; i < edges->size; i++) {
+        if (edges->entries[i]->key == to_node) {
+            //free the edge. 
+            free(edges->entries[i]->value);
+            //free the entry
+            free(edges->entries[i]);
+            
+            for (usize j = i; j < edges->size - 1; j++) {
+                edges->entries[j] = edges->entries[j+1];
+            }
+            edges->size--;
+        }
+    }
 }
