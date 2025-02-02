@@ -153,10 +153,10 @@ void test_remove_edge()
 
 int main(void)
 {
-    //test_create_node();
-    //test_number_of_edges();
-    //test_add_edge();
-    //test_get_edge();
+    test_create_node();
+    test_number_of_edges();
+    test_add_edge();
+    test_get_edge();
     test_remove_edge();
 
     return EXIT_SUCCESS;
