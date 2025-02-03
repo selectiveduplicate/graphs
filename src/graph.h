@@ -4,11 +4,14 @@
 #include <stdlib.h>
 
 typedef size_t usize;
+typedef float f32;
+
+
 
 typedef struct Edge {
     usize from_node;
     usize to_node;
-    usize weight;
+    f32 weight;
 } Edge;
 
 typedef struct Entry {
@@ -39,12 +42,23 @@ typedef struct Graph {
     Node **nodes;
 } Graph;
 
+typedef enum ErrorType {
+    GraphIndexOutOfBound,
+    None,
+} ErrorType;
+
+typedef struct InsertEdgeResult {
+    ErrorType error_type;
+    Edge *value;
+} InsertEdgeResult ;
+
 Node *create_node(usize idx);
 usize number_of_edges(Node *node);
-void add_edge(Node* from_node, usize to_node, usize weight);
+Edge *add_edge(Node* from_node, usize to_node, f32 weight);
 Dictionary *create_dict(void);
 Edge *get_edge(Node *from_node, usize to_node);
 void remove_edge(Node *from_node, usize to_node);
 Graph *create_graph(usize num_nodes, bool undirected);
+InsertEdgeResult insert_edge(Graph *graph, usize from, usize to, f32 weight);
 
 #endif // !GRAPH_H

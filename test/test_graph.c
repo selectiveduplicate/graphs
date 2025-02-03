@@ -175,6 +175,33 @@ void test_creating_graph()
     free_graph(graph);
 }
 
+void test_creating_valid_edge_in_graph()
+{
+    Graph *graph = create_graph(5, true);
+    InsertEdgeResult result = insert_edge(graph, 0, 2, 1280.5);
+    assert(result.error_type == None);
+
+    // it should now have one edge
+    assert(graph->nodes[0]->edges->size == 1);
+
+    assert(result.value->from_node == 0);
+    assert(result.value->to_node == 2);
+    assert(result.value->weight == 1280.5);
+
+    free_graph(graph);
+}
+
+void test_creating_invalid_edge_in_graph()
+{
+    Graph *graph = create_graph(5, true);
+    InsertEdgeResult result = insert_edge(graph, 10, 2, 1280.5);
+    assert(result.error_type == GraphIndexOutOfBound);
+
+    assert(result.value == nullptr);
+
+    free_graph(graph);
+}
+
 
 int main(void)
 {
@@ -184,6 +211,7 @@ int main(void)
     test_get_edge();
     test_remove_edge();
     test_creating_graph();
+    test_creating_valid_edge_in_graph();
 
     return EXIT_SUCCESS;
 }

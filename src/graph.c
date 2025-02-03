@@ -35,7 +35,7 @@ Dictionary *create_dict(void)
     return dict;
 }
 
-void add_edge(Node* from_node, usize to_node, usize weight)
+Edge *add_edge(Node* from_node, usize to_node, f32 weight)
 {
     if (from_node->edges->size == from_node->edges->capacity) {
         from_node->edges->capacity =
@@ -69,6 +69,8 @@ void add_edge(Node* from_node, usize to_node, usize weight)
 
     from_node->edges->entries[from_node->edges->size] = new_entry;
     from_node->edges->size++;
+
+    return new_edge;
 }
 
 /* 
@@ -133,4 +135,19 @@ Graph *create_graph(usize num_nodes, bool undirected)
     graph->num_nodes = num_nodes;
     return graph;
 
+}
+
+InsertEdgeResult insert_edge(Graph *graph, usize from, usize to, f32 weight)
+{
+    InsertEdgeResult result = {.error_type = None, .value = nullptr};
+
+    if (to >= graph->num_nodes) {
+        result.error_type = GraphIndexOutOfBound;
+        return result;
+    }
+
+    Edge *added = add_edge(graph->nodes[from], to, weight);
+
+    result.value = added;    
+    return result;
 }
