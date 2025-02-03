@@ -36,6 +36,17 @@ void free_node(Node *node)
     free(node);
 }
 
+void free_graph(Graph *graph)
+{
+    if (graph == nullptr) return;
+
+    for (size_t i = 0; i < graph->num_nodes; i++) {
+        free_node(graph->nodes[i]);
+    }
+    free(graph->nodes);
+    free(graph);
+}
+
 /*
  * Tests
  */
@@ -150,6 +161,20 @@ void test_remove_edge()
     free_node(node_85);
 }
 
+void test_creating_graph()
+{
+    Graph *graph = create_graph(5, true);
+
+    assert(graph->num_nodes == 5);
+    assert(graph->undirected == true);
+
+    assert(graph->nodes[0]->idx == 0);
+    assert(graph->nodes[0]->edges->entries == nullptr);
+    assert(graph->nodes[0]->edges->size == 0);
+
+    free_graph(graph);
+}
+
 
 int main(void)
 {
@@ -158,6 +183,7 @@ int main(void)
     test_add_edge();
     test_get_edge();
     test_remove_edge();
+    test_creating_graph();
 
     return EXIT_SUCCESS;
 }

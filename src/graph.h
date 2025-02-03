@@ -33,11 +33,18 @@ typedef struct Node {
     Dictionary *edges;
 } Node;
 
+typedef struct Graph {
+    usize num_nodes;
+    bool undirected;
+    Node **nodes;
+} Graph;
+
 Node *create_node(usize idx);
 usize number_of_edges(Node *node);
 void add_edge(Node* from_node, usize to_node, usize weight);
 Dictionary *create_dict(void);
 Edge *get_edge(Node *from_node, usize to_node);
 void remove_edge(Node *from_node, usize to_node);
+Graph *create_graph(usize num_nodes, bool undirected);
 
 #endif // !GRAPH_H

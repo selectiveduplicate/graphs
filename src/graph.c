@@ -106,3 +106,31 @@ void remove_edge(Node *from_node, usize to_node)
         }
     }
 }
+
+Graph *create_graph(usize num_nodes, bool undirected)
+{
+    Graph *graph = (Graph *)malloc(sizeof(Graph));
+    if (graph == nullptr) {
+        fprintf(stderr, "failed to allocate memory for new graph\n");
+        exit(1);
+    }
+
+    graph->nodes = (Node **)malloc(sizeof(Node) * num_nodes);
+    if (graph->nodes == nullptr) {
+        fprintf(stderr, "failed to allocate memory for nodes list in graph\n");
+        exit(1);
+    }
+
+    for (size_t i = 0; i < num_nodes; i++) {
+        Node *node = create_node(i);
+        if (node == nullptr) {
+            fprintf(stderr, "failed to create node\n");
+            exit(1);
+        }
+        graph->nodes[i] = node;
+    }
+    graph->undirected = undirected;
+    graph->num_nodes = num_nodes;
+    return graph;
+
+}

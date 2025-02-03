@@ -16,7 +16,7 @@ if [[ $1 == "test" ]]; then
 
     # Run the tests
     ./build/test_graph
-elif [[ $1 == "chem" ]]; then
+elif [[ $1 == "mem" ]]; then
     echo "Compiling and running tests with VALGRIND"
 
     # Compile test_graph.c and link with graph.o
@@ -25,6 +25,9 @@ elif [[ $1 == "chem" ]]; then
 
     # Run the tests
     ~/.local/bin/bin/valgrind --leak-check=yes ./build/test_graph
+elif [[ $1 == "clean" ]]; then
+    echo "Cleaning build artifacts"
+    rm -rf build/
 else
     # Compile graph.c and create the executable (e.g., build/graph)
     gcc $FLAGS src/graph.c -o build/graph
