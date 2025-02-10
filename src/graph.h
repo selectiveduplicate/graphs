@@ -44,13 +44,21 @@ typedef struct Graph {
 
 typedef enum ErrorType {
     GraphIndexOutOfBound,
+    NodeNotFound,
+    EdgeNotFound,
     None,
 } ErrorType;
 
 typedef struct InsertEdgeResult {
     ErrorType error_type;
     Edge *value;
-} InsertEdgeResult ;
+} InsertEdgeResult;
+
+
+typedef struct GetEdgeResult {
+    ErrorType error_type;
+    Edge *value;
+} GetEdgeResult;
 
 Node *create_node(usize idx);
 usize number_of_edges(Node *node);
@@ -60,5 +68,6 @@ Edge *get_edge(Node *from_node, usize to_node);
 void remove_edge(Node *from_node, usize to_node);
 Graph *create_graph(usize num_nodes, bool undirected);
 InsertEdgeResult insert_edge(Graph *graph, usize from, usize to, f32 weight);
+GetEdgeResult g_get_edge(Graph *graph, usize from, usize to);
 
 #endif // !GRAPH_H

@@ -151,3 +151,26 @@ InsertEdgeResult insert_edge(Graph *graph, usize from, usize to, f32 weight)
     result.value = added;    
     return result;
 }
+
+GetEdgeResult g_get_edge(Graph *graph, usize from, usize to)
+{
+    GetEdgeResult result = {.error_type = None, .value = nullptr};
+
+    if (to >= graph->num_nodes) {
+        result.error_type = GraphIndexOutOfBound;
+        return result;
+    }
+    
+    Node *src = nullptr;
+
+    for (size_t i = 0; i < graph->num_nodes; i++) {
+        if (graph->nodes[i]->idx == from) {
+            src = graph->nodes[i];
+        }    
+    }
+
+    if (src == nullptr) {
+        result.error_type = NodeNotFound;
+        return result;
+    }
+}

@@ -202,6 +202,21 @@ void test_creating_invalid_edge_in_graph()
     free_graph(graph);
 }
 
+void test_getting_edge_in_graph()
+{
+    Graph *graph = create_graph(5, true);
+    InsertEdgeResult result1 = insert_edge(graph, 0, 2, 80.5);
+    InsertEdgeResult result2 = insert_edge(graph, 1, 3, 1280.5);
+
+    assert(result1.error_type == None);
+    assert(result2.error_type == None);
+
+    GetEdgeResult result = g_get_edge(graph, 10, 3);
+    assert(result.error_type == NodeNotFound);
+    assert(result.value == nullptr);
+
+    free_graph(graph);
+}
 
 int main(void)
 {
@@ -212,6 +227,6 @@ int main(void)
     test_remove_edge();
     test_creating_graph();
     test_creating_valid_edge_in_graph();
-
+    test_getting_edge_in_graph();
     return EXIT_SUCCESS;
 }
